@@ -12,25 +12,31 @@ def show_board(board):
 def players_move(board):
     global all_turns
 
-    try:
-        chosen_cell = int(input("choose: "))
+    while True:
+        try:
+            chosen_cell = int(input("choose: "))
+        except ValueError:
+            print("what was that?")
+            continue
+
         if chosen_cell < 0 or chosen_cell > 9:
             print("you kidding?")
-            players_move(board)
+            continue
 
-        for i in range(3):
-            for j in range(3):
-                if board[i][j] == chosen_cell:
-                    if all_turns % 2 == 1:
-                        board[i][j] = "O"
-                        all_turns += 1
-                    else:
-                        board[i][j] = "X"
-                        all_turns += 1
+        row = (chosen_cell - 1) // 3
+        col = (chosen_cell - 1) % 3
 
-    except ValueError:
-        print("what was that?")
-        players_move(board)
+        if board[row][col] == "X" or board[row][col] == "O":
+            print("Cell already taken")
+            continue
+
+        else:
+            if all_turns % 2 == 0:
+                board[row][col] = "X"
+            else:
+                board[row][col] = "O"
+            all_turns += 1
+            break
 
 def checker(board):
     global all_turns
@@ -54,8 +60,6 @@ def checker(board):
 
     if all_turns == 9:
         return "nobody"
-
-
 
 while True:
     input("press enter to play...")
